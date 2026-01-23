@@ -1,0 +1,59 @@
+HTML
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>CucciNotes | Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header-section">
+        <a href="index.html" class="brand-logo">Cucci<span>Notes</span></a>
+    </header>
+
+    <nav class="navbar-custom">
+        <ul class="nav">
+            <li><a href="index.html" class="nav-link active">Home</a></li>
+            <li><a href="create.html" class="nav-link">Crea Card</a></li>
+            <li><a href="notes.html" class="nav-link">Appunti</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h2 class="text-center mb-4">📚 Le tue Materie</h2>
+        <div class="row g-4" id="topics-container"></div>
+    </div>
+
+    <script>
+        const defaultDb = {
+            'Diritto': [{ q: "Cos'è la Costituzione?", a: "La legge fondamentale dello Stato." }],
+            'Economia': [{ q: "Cos'è il mercato?", a: "Luogo di incontro tra domanda e offerta." }]
+        };
+
+        function renderHome() {
+            const container = document.getElementById('topics-container');
+            const userDb = JSON.parse(localStorage.getItem('cucciFlashcards')) || {};
+            const fullDb = { ...defaultDb, ...userDb };
+
+            container.innerHTML = '';
+            Object.keys(fullDb).forEach(topic => {
+                container.innerHTML += `
+                    <div class="col-md-4">
+                        <div class="card note-card p-4 text-center">
+                            <h3>${topic}</h3>
+                            <button class="btn btn-custom mt-3" onclick="openTopic('${topic}')">Ripassa</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function openTopic(topic) {
+            localStorage.setItem('selectedTopic', topic);
+            window.location.href = 'flashcards.html';
+        }
+
+        window.onload = renderHome;
+    </script>
+</body>
+</html>
